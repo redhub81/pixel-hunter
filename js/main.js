@@ -1,20 +1,20 @@
 // main.js
 
 window.main = (function () {
-  const keyCodeLeftArrow = 37;
-  const keyCodeRightArrow = 39;
+  const KEY_CODE_LEFT_ARROW = 37;
+  const KEY_CODE_RIGHT_ARROW = 39;
+  const SCREEN_START_NUMBER = 0;
+  const SCREEN_UNKNOWN_NUMBER = -1;
 
-  const startScreenNumber = 0;
   const mainContent = document.querySelector(`main.central`);
-  const templates = [];
-  (function () {
+  const templates = (function () {
     const templateNames = [`#greeting`, `#rules`, `#game-1`, `#game-2`, `#game-3`, `#stats`];
-    templateNames.forEach((it) => {
-      templates.push(document.querySelector(it).content);
+    return templateNames.map((it) => {
+      return document.querySelector(it).content;
     });
   }());
 
-  let currentScreenNumber = -1;
+  let currentScreenNumber = SCREEN_UNKNOWN_NUMBER;
 
   const showScreen = function (screenNumber) {
     const contentTemplate = templates[screenNumber].cloneNode(true);
@@ -22,7 +22,7 @@ window.main = (function () {
     mainContent.appendChild(contentTemplate);
   };
 
-  const getPreviuseScreenNumber = function () {
+  const getPreviouseScreenNumber = function () {
     return Math.max(0, currentScreenNumber - 1);
   };
 
@@ -45,13 +45,11 @@ window.main = (function () {
 
   const subscribe = function () {
     document.addEventListener(`keydown`, function (evt) {
-      if (evt.altKey && evt.keyCode === keyCodeLeftArrow) {
-        const newNumber = getPreviuseScreenNumber();
-        changeScreen(newNumber);
+      if (evt.altKey && evt.keyCode === KEY_CODE_LEFT_ARROW) {
+        changeScreen(getPreviouseScreenNumber());
       }
-      if (evt.altKey && evt.keyCode === keyCodeRightArrow) {
-        const newNumber = getNextScreenNumber();
-        changeScreen(newNumber);
+      if (evt.altKey && evt.keyCode === KEY_CODE_RIGHT_ARROW) {
+        changeScreen(getNextScreenNumber());
       }
     });
   };
@@ -59,7 +57,7 @@ window.main = (function () {
   return {
     run: () => {
       subscribe();
-      changeScreen(startScreenNumber);
+      changeScreen(SCREEN_START_NUMBER);
     }
   };
 

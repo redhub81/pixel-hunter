@@ -39,6 +39,9 @@ window.main = (function () {
     start: 0
   };
 
+  /** Инициализация доступа к DOM элементам.
+   ******************************************************************************/
+
   const mainContent = document.querySelector(`main.central`);
   const templates = (function () {
     const templateNames = [`#greeting`, `#rules`, `#game-1`, `#game-2`, `#game-3`, `#stats`];
@@ -47,13 +50,19 @@ window.main = (function () {
     });
   }());
 
-  let currentScreenNumber = SCREEN_NUMBER.unknown;
+  /** Отображение экранов.
+   ******************************************************************************/
 
   const showScreen = function (screenNumber) {
     const contentTemplate = templates[screenNumber].cloneNode(true);
     mainContent.innerHTML = ``;
     mainContent.appendChild(contentTemplate);
   };
+
+  /** Управление переключением экранов.
+   ******************************************************************************/
+
+  let currentScreenNumber = SCREEN_NUMBER.unknown;
 
   const getPreviouseScreenNumber = function () {
     return Math.max(0, currentScreenNumber - 1);
@@ -76,6 +85,9 @@ window.main = (function () {
     });
   };
 
+  /** Подписка на события DOM.
+   ******************************************************************************/
+
   const subscribe = function () {
     document.addEventListener(`keydown`, function (evt) {
       if (evt.altKey && evt.keyCode === KEY_CODE.leftArrow) {
@@ -86,6 +98,9 @@ window.main = (function () {
       }
     });
   };
+
+  /** Публикация интерфейса модуля.
+   ******************************************************************************/
 
   return {
     /**

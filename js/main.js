@@ -1,10 +1,43 @@
 // main.js
 
+/**
+ * Главный модуль приложения.
+ * @type {{run}}
+ */
 window.main = (function () {
-  const KEY_CODE_LEFT_ARROW = 37;
-  const KEY_CODE_RIGHT_ARROW = 39;
-  const SCREEN_START_NUMBER = 0;
-  const SCREEN_UNKNOWN_NUMBER = -1;
+  /**
+   * Перечисление кодов клавиш.
+   * @type {{leftArrow: number, rightArrow: number}}
+   */
+  const KEY_CODE = {
+    /**
+     * Код клавиши "Стрелка влево".
+     * @type {number}
+     */
+    leftArrow: 37,
+    /**
+     * Код клавиши "Стрелка вправо".
+     * @type {number}
+     */
+    rightArrow: 39
+  };
+
+  /**
+   * Перечисление номеров экранов.
+   * @type {{unknown: number, start: number}}
+   */
+  const SCREEN_NUMBER = {
+    /**
+     * Номер неизвестного экрана.
+     * @type {number}
+     */
+    unknown: -1,
+    /**
+     * Номер стартового экрана.
+     * @type {number}
+     */
+    start: 0
+  };
 
   const mainContent = document.querySelector(`main.central`);
   const templates = (function () {
@@ -14,7 +47,7 @@ window.main = (function () {
     });
   }());
 
-  let currentScreenNumber = SCREEN_UNKNOWN_NUMBER;
+  let currentScreenNumber = SCREEN_NUMBER.unknown;
 
   const showScreen = function (screenNumber) {
     const contentTemplate = templates[screenNumber].cloneNode(true);
@@ -45,19 +78,22 @@ window.main = (function () {
 
   const subscribe = function () {
     document.addEventListener(`keydown`, function (evt) {
-      if (evt.altKey && evt.keyCode === KEY_CODE_LEFT_ARROW) {
+      if (evt.altKey && evt.keyCode === KEY_CODE.leftArrow) {
         changeScreen(getPreviouseScreenNumber());
       }
-      if (evt.altKey && evt.keyCode === KEY_CODE_RIGHT_ARROW) {
+      if (evt.altKey && evt.keyCode === KEY_CODE.rightArrow) {
         changeScreen(getNextScreenNumber());
       }
     });
   };
 
   return {
+    /**
+     * Запускает выполнение приложения.
+     */
     run: () => {
       subscribe();
-      changeScreen(SCREEN_START_NUMBER);
+      changeScreen(SCREEN_NUMBER.start);
     }
   };
 

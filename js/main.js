@@ -64,7 +64,7 @@ window.main = (function () {
 
   let currentScreenNumber = SCREEN_NUMBER.unknown;
 
-  const getPreviouseScreenNumber = function () {
+  const getPreviousScreenNumber = function () {
     return Math.max(0, currentScreenNumber - 1);
   };
 
@@ -91,7 +91,7 @@ window.main = (function () {
   const subscribe = function () {
     document.addEventListener(`keydown`, function (evt) {
       if (evt.altKey && evt.keyCode === KEY_CODE.leftArrow) {
-        changeScreen(getPreviouseScreenNumber());
+        changeScreen(getPreviousScreenNumber());
       }
       if (evt.altKey && evt.keyCode === KEY_CODE.rightArrow) {
         changeScreen(getNextScreenNumber());

@@ -60,7 +60,7 @@ const screenElement = deserialize(`\
     </div>
   </footer>`);
 
-const backElement = screenElement.querySelector(`.header__back`);
+const backElement = screenElement.querySelector(`.back`);
 const gameContentElement = screenElement.querySelector(`.game__content`);
 
 backElement.addEventListener(`click`, function (evt) {

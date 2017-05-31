@@ -21,9 +21,9 @@ const screenElement = deserialize(`\
     </div>
   </footer>`);
 
-const asterisk = screenElement.querySelector(`.intro__asterisk`);
+const asteriskElement = screenElement.querySelector(`.intro__asterisk`);
 
-asterisk.addEventListener(`click`, function () {
+asteriskElement.addEventListener(`click`, function () {
   showCentral(greetingScreen);
 });
 

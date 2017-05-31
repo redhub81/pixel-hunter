@@ -123,7 +123,7 @@ const screenElement = deserialize(`\
     </div>
   </footer>`);
 
-const backElement = screenElement.querySelector(`.header__back`);
+const backElement = screenElement.querySelector(`.back`);
 backElement.addEventListener(`click`, function (evt) {
   showCentral(introScreen);
 });

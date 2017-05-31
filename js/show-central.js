@@ -3,11 +3,11 @@
 /** Отображение экранов.
  ******************************************************************************/
 
-const mainContent = document.querySelector(`main.central`);
+const mainContentElement = document.querySelector(`main.central`);
 
 const showCentral = function (element) {
-  mainContent.innerHTML = ``;
-  mainContent.appendChild(element);
+  mainContentElement.innerHTML = ``;
+  mainContentElement.appendChild(element);
 };
 
 export default showCentral;

@@ -1,14 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Пиксель хантер</title>
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;subset=cyrillic" rel="stylesheet">
-  <link href="css/style.css" rel="stylesheet">
-</head>
-<body>
+// intro.js
+import deserialize from './deserialize.js';
+import {screen as greetingScreen} from './greeting.js';
+import showCentral from './show-central.js';
 
-<main class="central">
+const screenElement = deserialize(`\
   <div id="main" class="central__content">
     <div id="intro" class="intro">
       <h1 class="intro__asterisk">*</h1>
@@ -24,10 +19,12 @@
       <a href="https://www.facebook.com/htmlacademy" class="social-link  social-link--fb">Фэйсбук</a>
       <a href="https://vk.com/htmlacademy" class="social-link  social-link--vk">Вконтакте</a>
     </div>
-  </footer>
-</main>
+  </footer>`);
 
-<script src="js/main.js"></script>
+const asterisk = screenElement.querySelector(`.intro__asterisk`);
 
-</body>
-</html>
+asterisk.addEventListener(`click`, function () {
+  showCentral(greetingScreen);
+});
+
+export const screen = screenElement;

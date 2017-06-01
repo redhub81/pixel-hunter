@@ -1,9 +1,10 @@
-// intro.js
-import deserialize from './deserialize.js';
-import {screen as greetingScreen} from './greeting.js';
-import showCentral from './show-central.js';
+/** @module screens/introScreen */
 
-const screenElement = deserialize(`\
+import contentBuilder from '../content-builder.js';
+import contentPresenter from '../content-presenter.js';
+import greetingScreen from './greetingScreen.js';
+
+const contentElement = contentBuilder.build(`\
   <div id="main" class="central__content">
     <div id="intro" class="intro">
       <h1 class="intro__asterisk">*</h1>
@@ -21,10 +22,23 @@ const screenElement = deserialize(`\
     </div>
   </footer>`);
 
-const asteriskElement = screenElement.querySelector(`.intro__asterisk`);
+const asteriskElement = contentElement.querySelector(`.intro__asterisk`);
 
 asteriskElement.addEventListener(`click`, function () {
-  showCentral(greetingScreen);
+  contentPresenter.show(greetingScreen);
 });
 
-export const screen = screenElement;
+/** The export of the module interface.
+ ************************************************************************************************
+ */
+export default {
+  /**
+   * The content of the screen.
+   */
+  content: contentElement,
+  /**
+   * Initialize initial state of the screen.
+   * @function
+   */
+  initialize: () => {}
+};

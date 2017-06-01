@@ -1,10 +1,10 @@
-// greeting.js
-import deserialize from './deserialize.js';
-import showCentral from './show-central.js';
-import {init as rulesInit} from './rules.js';
-import {screen as rulesScreen} from './rules.js';
+/** @module screens/greetingScreen */
 
-const screenElement = deserialize(`\
+import contentBuilder from '../content-builder.js';
+import contentPresenter from '../content-presenter.js';
+import rulesScreen from './rulesScreen.js';
+
+const contentElement = contentBuilder.build(`\
   <div class="greeting central--blur">
     <div class="greeting__logo"><img src="img/logo_big.png" width="201" height="89" alt="Pixel Hunter"></div>
     <h1 class="greeting__asterisk">*</h1>
@@ -29,11 +29,23 @@ const screenElement = deserialize(`\
     </div>
   </footer>`);
 
-const continueElement = screenElement.querySelector(`.greeting__continue`);
+const continueElement = contentElement.querySelector(`.greeting__continue`);
 
 continueElement.addEventListener(`click`, function () {
-  rulesInit();
-  showCentral(rulesScreen);
+  contentPresenter.show(rulesScreen);
 });
 
-export const screen = screenElement;
+/** The export of the module interface.
+ ************************************************************************************************
+ */
+export default {
+  /**
+   * The content of the screen.
+   */
+  content: contentElement,
+  /**
+   * Initialize initial state of the screen.
+   * @function
+   */
+  initialize: () => {}
+};

@@ -1,5 +1,6 @@
-// main.js
-import {screen as introScreen} from './intro.js';
-import showCentral from './show-central.js';
+/** @module main */
 
-showCentral(introScreen);
+import contentPresenter from './content-presenter.js';
+import introScreen from './screens/introScreen.js';
+
+contentPresenter.show(introScreen);

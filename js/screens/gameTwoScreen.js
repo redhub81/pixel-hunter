@@ -1,10 +1,11 @@
-// game-2.js
-import deserialize from './deserialize.js';
-import showCentral from './show-central.js';
-import {screen as introScreen} from './intro.js';
-import {screen as gameThreeScreen} from './game-3.js';
+/** @module screens/gameTwoScreen */
 
-const screenElement = deserialize(`\
+import contentBuilder from '../content-builder.js';
+import contentPresenter from '../content-presenter.js';
+import introScreen from './introScreen.js';
+import gameThreeScreen from './gameThreeScreen.js';
+
+const contentElement = contentBuilder.build(`\
   <header class="header">
     <div class="header__back">
       <span class="back">
@@ -60,18 +61,18 @@ const screenElement = deserialize(`\
     </div>
   </footer>`);
 
-const backElement = screenElement.querySelector(`.back`);
-const gameContentElement = screenElement.querySelector(`.game__content`);
+const backElement = contentElement.querySelector(`.back`);
+const gameContentElement = contentElement.querySelector(`.game__content`);
 const questionElements = gameContentElement.querySelectorAll(`.game__option input[type=radio]`);
 
 backElement.addEventListener(`click`, function (evt) {
-  showCentral(introScreen);
+  contentPresenter.show(introScreen);
 });
 
 gameContentElement.addEventListener(`change`, function (evt) {
   const target = evt.target;
   if (target.type === `radio`) {
-    showCentral(gameThreeScreen);
+    contentPresenter.show(gameThreeScreen);
   }
 });
 
@@ -81,5 +82,17 @@ const initialize = function () {
   });
 };
 
-export const screen = screenElement;
-export const init = initialize;
+/** The export of the module interface.
+ ************************************************************************************************
+ */
+export default {
+  /**
+   * The content of the screen.
+   */
+  content: contentElement,
+  /**
+   * Initialize initial state of the screen.
+   * @function
+   */
+  initialize
+};

@@ -1,9 +1,10 @@
-// stats.js
-import deserialize from './deserialize.js';
-import showCentral from './show-central.js';
-import {screen as introScreen} from './intro.js';
+/** @module screens/statsScreen */
 
-const screenElement = deserialize(`\
+import contentBuilder from '../content-builder.js';
+import contentPresenter from '../content-presenter.js';
+import introScreen from './introScreen.js';
+
+const contentElement = contentBuilder.build(`\
   <header class="header">
     <div class="header__back">
       <span class="back">
@@ -123,9 +124,22 @@ const screenElement = deserialize(`\
     </div>
   </footer>`);
 
-const backElement = screenElement.querySelector(`.back`);
+const backElement = contentElement.querySelector(`.back`);
 backElement.addEventListener(`click`, function (evt) {
-  showCentral(introScreen);
+  contentPresenter.show(introScreen);
 });
 
-export const screen = screenElement;
+/** The export of the module interface.
+ ************************************************************************************************
+ */
+export default {
+  /**
+   * The content of the screen.
+   */
+  content: contentElement,
+  /**
+   * Initialize initial state of the screen.
+   * @function
+   */
+  initialize: () => {}
+};

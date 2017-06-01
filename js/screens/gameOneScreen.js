@@ -1,11 +1,11 @@
-// game-1.js
-import deserialize from './deserialize.js';
-import showCentral from './show-central.js';
-import {screen as introScreen} from './intro.js';
-import {init as gameTwoInit} from './game-2.js';
-import {screen as gameTwoScreen} from './game-2.js';
+/** @module screens/gameOneScreen */
 
-const screenElement = deserialize(`\
+import contentBuilder from '../content-builder.js';
+import contentPresenter from '../content-presenter.js';
+import introScreen from './introScreen.js';
+import gameTwoScreen from './gameTwoScreen.js';
+
+const contentElement = contentBuilder.build(`\
   <header class="header">
     <div class="header__back">
       <span class="back">
@@ -72,13 +72,13 @@ const screenElement = deserialize(`\
     </div>
   </footer>`);
 
-const backElement = screenElement.querySelector(`.back`);
-const gameContentElement = screenElement.querySelector(`.game__content`);
+const backElement = contentElement.querySelector(`.back`);
+const gameContentElement = contentElement.querySelector(`.game__content`);
 const questionElements = gameContentElement.querySelectorAll(`.game__option input[type=radio]`);
 const response = {};
 
 backElement.addEventListener(`click`, function (evt) {
-  showCentral(introScreen);
+  contentPresenter.show(introScreen);
 });
 
 gameContentElement.addEventListener(`change`, function (evt) {
@@ -87,8 +87,7 @@ gameContentElement.addEventListener(`change`, function (evt) {
     response[target.name] = target.value;
   }
   if (Object.keys(response).length === 2) {
-    gameTwoInit();
-    showCentral(gameTwoScreen);
+    contentPresenter.show(gameTwoScreen);
   }
 });
 
@@ -99,5 +98,17 @@ const initialize = function () {
   Object.keys(response).forEach((it) => delete response[it]);
 };
 
-export const screen = screenElement;
-export const init = initialize;
+/** The export of the module interface.
+ ************************************************************************************************
+ */
+export default {
+  /**
+   * The content of the screen.
+   */
+  content: contentElement,
+  /**
+   * Initialize initial state of the screen.
+   * @function
+   */
+  initialize
+};

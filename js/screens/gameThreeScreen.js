@@ -1,12 +1,13 @@
-// game-3.js
-import deserialize from './deserialize.js';
-import showCentral from './show-central.js';
-import {screen as introScreen} from './intro.js';
-import {screen as statsScreen} from './stats.js';
+/** @module screens/gameThreeScreen */
+
+import contentBuilder from '../content-builder.js';
+import contentPresenter from '../content-presenter.js';
+import introScreen from './introScreen.js';
+import statsScreen from './statsScreen.js';
 
 const HTML_IMG_TAG_NAME = `img`;
 
-const screenElement = deserialize(`\
+const contentElement = contentBuilder.build(`\
   <header class="header">
     <div class="header__back">
       <span class="back">
@@ -60,18 +61,31 @@ const screenElement = deserialize(`\
     </div>
   </footer>`);
 
-const backElement = screenElement.querySelector(`.back`);
-const gameContentElement = screenElement.querySelector(`.game__content`);
+const backElement = contentElement.querySelector(`.back`);
+const gameContentElement = contentElement.querySelector(`.game__content`);
 
 backElement.addEventListener(`click`, function (evt) {
-  showCentral(introScreen);
+  contentPresenter.show(introScreen);
 });
 
 gameContentElement.addEventListener(`click`, function (evt) {
   const target = evt.target;
   if (target.tagName.toLowerCase() !== HTML_IMG_TAG_NAME) {
-    showCentral(statsScreen);
+    contentPresenter.show(statsScreen);
   }
 });
 
-export const screen = screenElement;
+/** The export of the module interface.
+ ************************************************************************************************
+ */
+export default {
+  /**
+   * The content of the screen.
+   */
+  content: contentElement,
+  /**
+   * Initialize initial state of the screen.
+   * @function
+   */
+  initialize: () => {}
+};

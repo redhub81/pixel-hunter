@@ -5,7 +5,7 @@ import contentPresenter from '../content-presenter.js';
 import introScreen from './introScreen.js';
 import gameOneScreen from './gameOneScreen.js';
 
-const contentElement = contentBuilder.build(`\
+const screenTemplate = `\
   <header class="header">
     <div class="header__back">
       <span class="back">
@@ -39,28 +39,31 @@ const contentElement = contentBuilder.build(`\
       <a href="https://www.facebook.com/htmlacademy" class="social-link  social-link--fb">Фэйсбук</a>
       <a href="https://vk.com/htmlacademy" class="social-link  social-link--vk">Вконтакте</a>
     </div>
-  </footer>`);
+  </footer>`;
 
-const backElement = contentElement.querySelector(`.header__back`);
-const rulesFormElement = contentElement.querySelector(`.rules__form`);
-const rulesInputElement = rulesFormElement.querySelector(`.rules__input`);
-const rulesButtonElement = rulesFormElement.querySelector(`.rules__button.continue`);
+let backElement;
+let rulesFormElement;
+let rulesInputElement;
+let rulesButtonElement;
 
-backElement.addEventListener(`click`, function (evt) {
-  contentPresenter.show(introScreen);
-});
+const isPlayerNameValid = () => {
+  return rulesInputElement.value.toString().length > 0;
+};
 
-rulesInputElement.addEventListener(`input`, function () {
-  rulesButtonElement.disabled = rulesInputElement.value.toString().length === 0;
-});
-
-rulesFormElement.addEventListener(`submit`, function () {
-  contentPresenter.show(gameOneScreen);
-});
-
-const initialize = function () {
-  rulesInputElement.value = ``;
-  rulesButtonElement.disabled = true;
+const subscribe = () => {
+  backElement.addEventListener(`click`, function (evt) {
+    contentPresenter.show(introScreen);
+  });
+  rulesInputElement.addEventListener(`input`, function () {
+    rulesButtonElement.disabled = !isPlayerNameValid();
+  });
+  rulesFormElement.addEventListener(`submit`, function (evt) {
+    evt.preventDefault();
+    if (!isPlayerNameValid()) {
+      return;
+    }
+    contentPresenter.show(gameOneScreen);
+  });
 };
 
 /** The export of the module interface.
@@ -69,11 +72,18 @@ const initialize = function () {
 export default {
   /**
    * The content of the screen.
-   */
-  content: contentElement,
-  /**
-   * Initialize initial state of the screen.
    * @function
+   * @return {object} Content element.
    */
-  initialize
+  getContent: () => {
+    const contentElement = contentBuilder.build(screenTemplate);
+    backElement = contentElement.querySelector(`.header__back`);
+    rulesFormElement = contentElement.querySelector(`.rules__form`);
+    rulesInputElement = rulesFormElement.querySelector(`.rules__input`);
+    rulesButtonElement = rulesFormElement.querySelector(`.rules__button.continue`);
+
+    subscribe();
+
+    return contentElement;
+  }
 };

@@ -7,7 +7,7 @@ import statsScreen from './statsScreen.js';
 
 const HTML_IMG_TAG_NAME = `img`;
 
-const contentElement = contentBuilder.build(`\
+const screenTemplate = `\
   <header class="header">
     <div class="header__back">
       <span class="back">
@@ -59,21 +59,22 @@ const contentElement = contentBuilder.build(`\
       <a href="https://www.facebook.com/htmlacademy" class="social-link  social-link--fb">Фэйсбук</a>
       <a href="https://vk.com/htmlacademy" class="social-link  social-link--vk">Вконтакте</a>
     </div>
-  </footer>`);
+  </footer>`;
 
-const backElement = contentElement.querySelector(`.back`);
-const gameContentElement = contentElement.querySelector(`.game__content`);
+let backElement;
+let gameContentElement;
 
-backElement.addEventListener(`click`, function (evt) {
-  contentPresenter.show(introScreen);
-});
-
-gameContentElement.addEventListener(`click`, function (evt) {
-  const target = evt.target;
-  if (target.tagName.toLowerCase() !== HTML_IMG_TAG_NAME) {
-    contentPresenter.show(statsScreen);
-  }
-});
+const subscribe = () => {
+  backElement.addEventListener(`click`, function (evt) {
+    contentPresenter.show(introScreen);
+  });
+  gameContentElement.addEventListener(`click`, function (evt) {
+    const target = evt.target;
+    if (target.tagName.toLowerCase() !== HTML_IMG_TAG_NAME) {
+      contentPresenter.show(statsScreen);
+    }
+  });
+};
 
 /** The export of the module interface.
  ************************************************************************************************
@@ -81,11 +82,16 @@ gameContentElement.addEventListener(`click`, function (evt) {
 export default {
   /**
    * The content of the screen.
-   */
-  content: contentElement,
-  /**
-   * Initialize initial state of the screen.
    * @function
+   * @return {object} Content element.
    */
-  initialize: () => {}
+  getContent: () => {
+    const contentElement = contentBuilder.build(screenTemplate);
+    backElement = contentElement.querySelector(`.back`);
+    gameContentElement = contentElement.querySelector(`.game__content`);
+
+    subscribe();
+
+    return contentElement;
+  }
 };

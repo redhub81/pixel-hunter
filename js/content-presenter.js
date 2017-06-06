@@ -4,10 +4,9 @@ const mainContentElement = document.querySelector(`main.central`);
 
 const show = function (screen) {
   mainContentElement.innerHTML = ``;
-  if (typeof screen.initialize !== `undefined`) {
-    screen.initialize();
-  }
-  mainContentElement.appendChild(screen.content);
+
+  const screenContent = screen.getContent();
+  mainContentElement.appendChild(screenContent);
 };
 
 /** The export of the module interface.

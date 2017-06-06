@@ -4,7 +4,7 @@ import contentBuilder from '../content-builder.js';
 import contentPresenter from '../content-presenter.js';
 import introScreen from './introScreen.js';
 
-const contentElement = contentBuilder.build(`\
+const screenTemplate = `\
   <header class="header">
     <div class="header__back">
       <span class="back">
@@ -122,12 +122,15 @@ const contentElement = contentBuilder.build(`\
       <a href="https://www.facebook.com/htmlacademy" class="social-link  social-link--fb">Фэйсбук</a>
       <a href="https://vk.com/htmlacademy" class="social-link  social-link--vk">Вконтакте</a>
     </div>
-  </footer>`);
+  </footer>`;
 
-const backElement = contentElement.querySelector(`.back`);
-backElement.addEventListener(`click`, function (evt) {
-  contentPresenter.show(introScreen);
-});
+let backElement;
+
+const subscribe = () => {
+  backElement.addEventListener(`click`, function (evt) {
+    contentPresenter.show(introScreen);
+  });
+};
 
 /** The export of the module interface.
  ************************************************************************************************
@@ -135,11 +138,15 @@ backElement.addEventListener(`click`, function (evt) {
 export default {
   /**
    * The content of the screen.
-   */
-  content: contentElement,
-  /**
-   * Initialize initial state of the screen.
    * @function
+   * @return {object} Content element.
    */
-  initialize: () => {}
+  getContent: () => {
+    const contentElement = contentBuilder.build(screenTemplate);
+    backElement = contentElement.querySelector(`.back`);
+
+    subscribe();
+
+    return contentElement;
+  }
 };

@@ -4,7 +4,7 @@ import contentBuilder from '../content-builder.js';
 import contentPresenter from '../content-presenter.js';
 import rulesScreen from './rulesScreen.js';
 
-const contentElement = contentBuilder.build(`\
+const screenTemplate = `\
   <div class="greeting central--blur">
     <div class="greeting__logo"><img src="img/logo_big.png" width="201" height="89" alt="Pixel Hunter"></div>
     <h1 class="greeting__asterisk">*</h1>
@@ -27,13 +27,14 @@ const contentElement = contentBuilder.build(`\
       <a href="https://www.facebook.com/htmlacademy" class="social-link  social-link--fb">Фэйсбук</a>
       <a href="https://vk.com/htmlacademy" class="social-link  social-link--vk">Вконтакте</a>
     </div>
-  </footer>`);
+  </footer>`;
 
-const continueElement = contentElement.querySelector(`.greeting__continue`);
-
-continueElement.addEventListener(`click`, function () {
-  contentPresenter.show(rulesScreen);
-});
+const subscribe = (contentElement) => {
+  const continueElement = contentElement.querySelector(`.greeting__continue`);
+  continueElement.addEventListener(`click`, function () {
+    contentPresenter.show(rulesScreen);
+  });
+};
 
 /** The export of the module interface.
  ************************************************************************************************
@@ -41,11 +42,13 @@ continueElement.addEventListener(`click`, function () {
 export default {
   /**
    * The content of the screen.
-   */
-  content: contentElement,
-  /**
-   * Initialize initial state of the screen.
    * @function
+   * @return {object} Content element.
    */
-  initialize: () => {}
+  getContent: () => {
+    const contentElement = contentBuilder.build(screenTemplate);
+    subscribe(contentElement);
+
+    return contentElement;
+  }
 };

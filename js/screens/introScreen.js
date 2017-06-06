@@ -4,7 +4,7 @@ import contentBuilder from '../content-builder.js';
 import contentPresenter from '../content-presenter.js';
 import greetingScreen from './greetingScreen.js';
 
-const contentElement = contentBuilder.build(`\
+const screenTemplate = `\
   <div id="main" class="central__content">
     <div id="intro" class="intro">
       <h1 class="intro__asterisk">*</h1>
@@ -20,13 +20,16 @@ const contentElement = contentBuilder.build(`\
       <a href="https://www.facebook.com/htmlacademy" class="social-link  social-link--fb">Фэйсбук</a>
       <a href="https://vk.com/htmlacademy" class="social-link  social-link--vk">Вконтакте</a>
     </div>
-  </footer>`);
+  </footer>`;
 
-const asteriskElement = contentElement.querySelector(`.intro__asterisk`);
+let asteriskElement;
 
-asteriskElement.addEventListener(`click`, function () {
-  contentPresenter.show(greetingScreen);
-});
+const subscribe = () => {
+
+  asteriskElement.addEventListener(`click`, function () {
+    contentPresenter.show(greetingScreen);
+  });
+};
 
 /** The export of the module interface.
  ************************************************************************************************
@@ -34,11 +37,15 @@ asteriskElement.addEventListener(`click`, function () {
 export default {
   /**
    * The content of the screen.
-   */
-  content: contentElement,
-  /**
-   * Initialize initial state of the screen.
    * @function
+   * @return {object} Content element.
    */
-  initialize: () => {}
+  getContent: () => {
+    const contentElement = contentBuilder.build(screenTemplate);
+    asteriskElement = contentElement.querySelector(`.intro__asterisk`);
+
+    subscribe(contentElement);
+
+    return contentElement;
+  }
 };

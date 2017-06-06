@@ -5,7 +5,7 @@ import contentPresenter from '../content-presenter.js';
 import introScreen from './introScreen.js';
 import gameTwoScreen from './gameTwoScreen.js';
 
-const contentElement = contentBuilder.build(`\
+const screenTemplate = `\
   <header class="header">
     <div class="header__back">
       <span class="back">
@@ -70,32 +70,25 @@ const contentElement = contentBuilder.build(`\
       <a href="https://www.facebook.com/htmlacademy" class="social-link  social-link--fb">Фэйсбук</a>
       <a href="https://vk.com/htmlacademy" class="social-link  social-link--vk">Вконтакте</a>
     </div>
-  </footer>`);
+  </footer>`;
 
-const backElement = contentElement.querySelector(`.back`);
-const gameContentElement = contentElement.querySelector(`.game__content`);
-const questionElements = gameContentElement.querySelectorAll(`.game__option input[type=radio]`);
-const response = {};
+let backElement;
+let gameContentElement;
+let response;
 
-backElement.addEventListener(`click`, function (evt) {
-  contentPresenter.show(introScreen);
-});
-
-gameContentElement.addEventListener(`change`, function (evt) {
-  const target = evt.target;
-  if (target.type === `radio`) {
-    response[target.name] = target.value;
-  }
-  if (Object.keys(response).length === 2) {
-    contentPresenter.show(gameTwoScreen);
-  }
-});
-
-const initialize = function () {
-  questionElements.forEach((it) => {
-    it.checked = false;
+const subscribe = () => {
+  backElement.addEventListener(`click`, function (evt) {
+    contentPresenter.show(introScreen);
   });
-  Object.keys(response).forEach((it) => delete response[it]);
+  gameContentElement.addEventListener(`change`, function (evt) {
+    const target = evt.target;
+    if (target.type === `radio`) {
+      response[target.name] = target.value;
+    }
+    if (Object.keys(response).length === 2) {
+      contentPresenter.show(gameTwoScreen);
+    }
+  });
 };
 
 /** The export of the module interface.
@@ -104,11 +97,17 @@ const initialize = function () {
 export default {
   /**
    * The content of the screen.
-   */
-  content: contentElement,
-  /**
-   * Initialize initial state of the screen.
    * @function
+   * @return {object} Content element.
    */
-  initialize
+  getContent: () => {
+    const contentElement = contentBuilder.build(screenTemplate);
+    backElement = contentElement.querySelector(`.back`);
+    gameContentElement = contentElement.querySelector(`.game__content`);
+    response = {};
+
+    subscribe();
+
+    return contentElement;
+  }
 };

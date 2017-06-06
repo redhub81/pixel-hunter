@@ -5,7 +5,7 @@ import contentPresenter from '../content-presenter.js';
 import introScreen from './introScreen.js';
 import gameThreeScreen from './gameThreeScreen.js';
 
-const contentElement = contentBuilder.build(`\
+const screenTemplate = `\
   <header class="header">
     <div class="header__back">
       <span class="back">
@@ -59,26 +59,21 @@ const contentElement = contentBuilder.build(`\
       <a href="https://www.facebook.com/htmlacademy" class="social-link  social-link--fb">Фэйсбук</a>
       <a href="https://vk.com/htmlacademy" class="social-link  social-link--vk">Вконтакте</a>
     </div>
-  </footer>`);
+  </footer>`;
 
-const backElement = contentElement.querySelector(`.back`);
-const gameContentElement = contentElement.querySelector(`.game__content`);
-const questionElements = gameContentElement.querySelectorAll(`.game__option input[type=radio]`);
+let backElement;
+let gameContentElement;
 
-backElement.addEventListener(`click`, function (evt) {
-  contentPresenter.show(introScreen);
-});
+const subscribe = () => {
+  backElement.addEventListener(`click`, function (evt) {
+    contentPresenter.show(introScreen);
+  });
 
-gameContentElement.addEventListener(`change`, function (evt) {
-  const target = evt.target;
-  if (target.type === `radio`) {
-    contentPresenter.show(gameThreeScreen);
-  }
-});
-
-const initialize = function () {
-  questionElements.forEach((it) => {
-    it.checked = false;
+  gameContentElement.addEventListener(`change`, function (evt) {
+    const target = evt.target;
+    if (target.type === `radio`) {
+      contentPresenter.show(gameThreeScreen);
+    }
   });
 };
 
@@ -88,11 +83,16 @@ const initialize = function () {
 export default {
   /**
    * The content of the screen.
-   */
-  content: contentElement,
-  /**
-   * Initialize initial state of the screen.
    * @function
+   * @return {object} Content element.
    */
-  initialize
+  getContent: () => {
+    const contentElement = contentBuilder.build(screenTemplate);
+    backElement = contentElement.querySelector(`.back`);
+    gameContentElement = contentElement.querySelector(`.game__content`);
+
+    subscribe();
+
+    return contentElement;
+  }
 };

@@ -1,10 +1,10 @@
 /** @module content-builder */
 
 const build = function (template) {
-  const element = document.createElement(`div`);
-  element.insertAdjacentHTML(`beforeend`, template);
+  const templateElement = document.createElement(`template`);
+  templateElement.innerHTML = template;
 
-  return element;
+  return templateElement.content;
 };
 
 /** The export of the module interface.

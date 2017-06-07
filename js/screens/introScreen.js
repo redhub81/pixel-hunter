@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Пиксель хантер</title>
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;subset=cyrillic" rel="stylesheet">
-  <link href="css/style.css" rel="stylesheet">
-</head>
-<body>
+/** @module screens/introScreen */
 
-<main class="central">
+import contentBuilder from '../content-builder.js';
+import contentPresenter from '../content-presenter.js';
+import greetingScreen from './greetingScreen.js';
+
+const screenTemplate = `\
   <div id="main" class="central__content">
     <div id="intro" class="intro">
       <h1 class="intro__asterisk">*</h1>
@@ -24,10 +20,32 @@
       <a href="https://www.facebook.com/htmlacademy" class="social-link  social-link--fb">Фэйсбук</a>
       <a href="https://vk.com/htmlacademy" class="social-link  social-link--vk">Вконтакте</a>
     </div>
-  </footer>
-</main>
+  </footer>`;
 
-<script src="js/main.js"></script>
+let asteriskElement;
 
-</body>
-</html>
+const subscribe = () => {
+
+  asteriskElement.addEventListener(`click`, function () {
+    contentPresenter.show(greetingScreen);
+  });
+};
+
+/** The export of the module interface.
+ ************************************************************************************************
+ */
+export default {
+  /**
+   * The content of the screen.
+   * @function
+   * @return {object} Content element.
+   */
+  getContent: () => {
+    const contentElement = contentBuilder.build(screenTemplate);
+    asteriskElement = contentElement.querySelector(`.intro__asterisk`);
+
+    subscribe(contentElement);
+
+    return contentElement;
+  }
+};
